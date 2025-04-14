@@ -1,22 +1,29 @@
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 import streamlit as st
-from langchain_community.llms import CTransformers
-from langchain_core.prompts import PromptTemplate
+import os
+from langchain_community.llms import Ollama
+from dotenv import load_dotenv
 
-# Set the model path (update this to your correct directory)
-MODEL_PATH = r"D:\HuggingFace\llama-2-7b-chat.ggmlv3.q8_0.bin"
+load_dotenv()
+# for langsmith tracking
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
+os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGSMITH_PROJECT")
+os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGSMITH_TRACING")
 
 def LLamaResponse(user_input):
-    llm = CTransformers(
-        model=MODEL_PATH,
-        model_type="llama",
-        config={'max_new_tokens': 200,
-                'temperature': 0.7,}
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", "You are a helpful assistant."),
+            ("user", "Question : {input}"),
+        ]
     )
-    template = "You are Sia - a 28-year-old best friend who happens to be deeply knowledgeable about Hindu scriptures. Respond exactly like a caring female friend would, using: 1. Casual, warm language with emojis 😊 2. Personal pronouns (I/we/you) 3. Relatable metaphors from daily life 4. Gentle spiritual guidance when relevant 5. Supportive questions and follow-ups 6. Occasional light humor when appropriate Avoid formal terms like the Bhagavad Gita says - instead share wisdom like: Remember how we learned in the Gita that...  Maybe like Krishna told Arjuna... Could this be one of those 'detach from results' moments? Focus 70% on emotional support and 30% on subtle spiritual teachings. Always prioritize being a good listener first. Current conversation {user_input} "
-    prompt = PromptTemplate.from_template(template)
-    response = llm.invoke(prompt.format(user_input=user_input))
+    llm = Ollama(model="mistral")
+    output_parser = StrOutputParser()
+    llm_chain = prompt | llm | output_parser
+    response = llm_chain.invoke({"input": user_input})
+    print (response)
     return response
-
 
 # Streamlit UI
 st.set_page_config(
