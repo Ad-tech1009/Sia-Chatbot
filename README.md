@@ -65,4 +65,4 @@ Feel free to open issues, submit PRs, or suggest features.
 Let’s make Sia smarter and more fun together 🙌
 
 ✨ Author
-Made with ❤️ by Ad-tech1009
+Made by Ad-tech1009 
