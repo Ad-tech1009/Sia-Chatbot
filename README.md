@@ -1,22 +1,32 @@
 # Sia: Emotion-Aware Chat Companion 🧘‍♀️
 
-Sia is an interactive web-based chatbot that blends fun, introspection, and wisdom. Powered by LLMs and designed with smooth animations, Sia responds based on user mood and context, offering an immersive experience inspired by Hindu scriptures.
+Sia (She Is Always-here) is an interactive web-based chatbot that blends fun, introspection, and wisdom. Designed to feel like a calming, emotionally aware companion, Sia adapts to your tone, responds with warmth, and reflects insights from ancient philosophy. Powered by LLMs and crafted with smooth, expressive animations, Sia offers a deeply personal and immersive chat experience inspired by Hindu scriptures and Stoic thought.
 
 ---
 
 ## 🧠 Features
+- 🎨 Emotion-aware background changes using animated wave threads  
+  Visuals adapt in real time to match the tone and emotion of your conversation.
+- 🗨️ Context-aware responses with vector-based retrieval (RAG)  
+  Uses Retrieval-Augmented Generation to pull contextually relevant insights, particularly from sacred texts like the Bhagavad Gita.
+- 🎭 Lightweight UI/UX built with React and Tailwind CSS  
+  A clean, mobile-friendly interface that feels both modern and personal.
+- ⚡ Fast LLM backend using Ollama (Mistral) served through Python  
+  Local and efficient — runs fully offline-capable using FastAPI and Ollama.
+- 📚 Scriptural base: Bhagavad Gita (with expansion plans)  
+  Offers subtle reflections and grounded advice inspired by timeless spiritual teachings.
+- 🧘‍♀️ Human-like persona: calm, emotionally intelligent, and adaptive  
+  Sia is designed to sound less like a bot and more like a friend — supportive, informal, and subtly wise. Responses adjust in tone based on mood and topic.
+- 🧠 Mood wave engine (visual + semantic)  
+  Tracks the emotional progression of a conversation, influencing Sia's demeanor and background colors in real time.
 
-- 🎨 Emotion-aware background changes using animated wave threads
-- 🗨️ Context-aware responses with vector-based retrieval (RAG)
-- 🎭 Lightweight UI/UX built with React and Tailwind CSS
-- ⚡ Fast LLM backend using Ollama (Mistral) served through Python
-- 📚 Scriptural base: Bhagavad Gita (with expansion plans)
-
-> 🛠️ *Planned Features:*
-> - Mini-games and playful interactions  
-> - Scripture exploration mode  
-> - Voice and facial emotion support  
-> - Fine-tuned LLaMA model for deeper understanding  
+> 🛠️ Planned Features:
+> - 🎮 Mini-games and playful interactions (e.g., Mood Mirror, Reflection Cards)  
+> - 📖 Scripture exploration mode with quotes and commentary  
+> - 🎤 Voice and facial emotion support (voice tone, webcam face reading - opt-in) 
+> - 🧬 Fine-tuned LLaMA model for deeper emotional and philosophical understanding 
+> - 🔄 Memory module to remember user preferences and moods over time (opt-in)  
+> - 🛡️ Ethical safeguards for sensitive topics (mental health, legal, etc.) with safe fallback responses  
 
 ---
 
