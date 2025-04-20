@@ -1,4 +1,4 @@
-# Sia: Emotion-Aware Chat Companion 🧘‍♀️
+# Sia: Emotion-Aware Chat Companion 🌸✨
 
 Sia (She Is Always-here) is an interactive web-based chatbot that blends fun, introspection, and wisdom. Designed to feel like a calming, emotionally aware companion, Sia adapts to your tone, responds with warmth, and reflects insights from ancient philosophy. Powered by LLMs and crafted with smooth, expressive animations, Sia offers a deeply personal and immersive chat experience inspired by Hindu scriptures and Stoic thought.
 
