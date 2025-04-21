@@ -1,6 +1,6 @@
 // App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import Chat from './pages/Chat';
+import ChatApp from './pages/ChatApp';
 import Landing from './pages/Landing';
 import About from './pages/About';
 
@@ -10,7 +10,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={<ChatApp />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Router>
