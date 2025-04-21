@@ -67,7 +67,9 @@ Vector DB: ChromaDB
 Model: Mistral (via Ollama)
 
 📸 Screenshots
-![Screenshot 2025-04-18 172300](https://github.com/user-attachments/assets/1466b897-b3ac-4e71-9ab5-9b74da1f648e)
+![Screenshot 2025-04-20 220341](https://github.com/user-attachments/assets/1aa67f6f-d5ee-4afd-86df-adee8f2406e6)
+
+![image](https://github.com/user-attachments/assets/384177e2-1a65-4573-bb3e-af33b2b36171)
 
 
 🤝 Contributions
