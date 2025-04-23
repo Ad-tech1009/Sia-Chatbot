@@ -109,16 +109,35 @@ void main() {
 }
 `;
 
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+
+function lerpColorStops(current, target, t) {
+  return current.map((color, i) => [
+    lerp(color[0], target[i][0], t),
+    lerp(color[1], target[i][1], t),
+    lerp(color[2], target[i][2], t),
+  ]);
+}
+
 export default function MoodWave(props) {
   const {
     colorStops = ["#00d8ff", "#7cff67", "#00d8ff"],
     amplitude = 1.0,
-    blend = 0.5
+    blend = 0.5,
+    transitionSpeed = 0.01 // adjust for faster/slower transitions
   } = props;
   const propsRef = useRef(props);
   propsRef.current = props;
 
   const ctnDom = useRef(null);
+  const currentStopsRef = useRef(
+    colorStops.map((hex) => {
+      const c = new Color(hex);
+      return [c.r, c.g, c.b];
+    })
+  );
 
   useEffect(() => {
     const ctn = ctnDom.current;
@@ -133,7 +152,7 @@ export default function MoodWave(props) {
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.canvas.style.backgroundColor = 'transparent';
+    gl.canvas.style.backgroundColor = "transparent";
 
     let program;
 
@@ -153,18 +172,13 @@ export default function MoodWave(props) {
       delete geometry.attributes.uv;
     }
 
-    const colorStopsArray = colorStops.map((hex) => {
-      const c = new Color(hex);
-      return [c.r, c.g, c.b];
-    });
-
     program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
-        uColorStops: { value: colorStopsArray },
+        uColorStops: { value: currentStopsRef.current },
         uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
         uBlend: { value: blend }
       }
@@ -174,21 +188,29 @@ export default function MoodWave(props) {
     ctn.appendChild(gl.canvas);
 
     let animateId = 0;
+
     const update = (t) => {
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
       program.uniforms.uTime.value = time * speed * 0.1;
       program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
       program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
-      const stops = propsRef.current.colorStops ?? colorStops;
-      program.uniforms.uColorStops.value = stops.map((hex) => {
+
+      const targetStops = (propsRef.current.colorStops ?? colorStops).map((hex) => {
         const c = new Color(hex);
         return [c.r, c.g, c.b];
       });
+
+      // Smooth interpolation
+      const current = currentStopsRef.current;
+      const lerped = lerpColorStops(current, targetStops, transitionSpeed);
+      currentStopsRef.current = lerped;
+      program.uniforms.uColorStops.value = lerped;
+
       renderer.render({ scene: mesh });
     };
-    animateId = requestAnimationFrame(update);
 
+    animateId = requestAnimationFrame(update);
     resize();
 
     return () => {

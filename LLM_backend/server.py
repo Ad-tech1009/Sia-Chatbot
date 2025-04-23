@@ -1,12 +1,13 @@
 from config.app import app
-from routes.test import add_test_route
-from routes.sia_t1 import add_t1_route
+from routes import add_t1_route,add_test_route,mood_router
 import uvicorn
 
-
-# Add all routes
+# LangServe Endpoints
 add_test_route(app)
 add_t1_route(app)
+
+# REST endpoints
+app.include_router(mood_router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

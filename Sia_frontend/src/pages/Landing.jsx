@@ -4,8 +4,8 @@ import Orb from '../components/Orb';
 const Landing = () => {
   return (
     <div className="text-white bg-black overflow-hidden">
-      {/* Top Right Auth Buttons
-      <div className="absolute top-4 right-6 z-50 flex space-x-4">
+      {/* Top Right Auth Buttons */}
+      {/* <div className="absolute top-4 right-6 z-50 flex space-x-4">
         <Link to="/login">
           <button className="px-4 py-2 text-sm rounded-md bg-transparent text-indigo-300 hover:text-white hover:bg-indigo-900/40 border border-indigo-500/30 hover:border-indigo-400 transition-all duration-200">
             Login
