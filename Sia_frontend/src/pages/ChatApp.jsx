@@ -21,12 +21,27 @@ const TypingIndicator = () => (
   </div>
 );
 
+const moodColors = {
+  happy:     ["#A8C0FF", "#D1B3FF", "#E0C3FC"], // soft periwinkle to lavender
+  calm:      ["#B8C1EC", "#A2A8D3", "#D3C1E5"], // muted blue-lavender tones
+  sad:       ["#4B4E6D", "#5C5470", "#726A95"], // dusky purple-blues
+  angry:     ["#5F4B8B", "#725A9C", "#8A6BBE"], // rich purples without harsh reds
+  thoughtful:["#9A8C98", "#BFA2DB", "#D3BBDD"], // soft lilac and misty violets
+  energetic: ["#8896E3", "#A29BFE", "#B7A7F9"], // brighter lavenders, still smooth
+  anxious:   ["#667292", "#7788A5", "#8A9EB7"], // cool and subdued blue-grays
+};
+
+
+
 function ChatApp() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [currentMood, setCurrentMood] = useState("calm");
+  const [lastMoodChangeTime, setLastMoodChangeTime] = useState(Date.now());
   const bottomRef = useRef(null);
+  const lastMoodRef = useRef("calm");
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,6 +59,27 @@ function ChatApp() {
     }
   }, [messages, isTyping]);
 
+  const fetchMood = async (input) => { 
+    try { 
+      const res = await fetch("http://localhost:8000/detect_mood", { 
+        method: "POST", 
+        headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify({ user_input: input }), 
+      }); 
+      const data = await res.json(); 
+      const detected = data.mood || "calm"; 
+      const timeSinceLastChange = Date.now() - lastMoodChangeTime;
+      if (detected !== lastMoodRef.current && timeSinceLastChange > 2000) { 
+        lastMoodRef.current = detected; 
+        setCurrentMood(detected); 
+        setLastMoodChangeTime(Date.now());
+      } 
+    } 
+    catch (err) { 
+      console.error("Mood detection failed", err); 
+    } 
+  };
+
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -53,12 +89,12 @@ function ChatApp() {
     setIsTyping(true);
 
     try {
+      fetchMood(input);
       const response = await fetch('http://localhost:8000/siat1/invoke', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ input: { user_input: input } }),
       });
-
       const data = await response.json();
       const botMessage = {
         role: 'sia',
@@ -112,9 +148,9 @@ function ChatApp() {
         {/* Background Animation (MoodWave) */}
         <div className="absolute inset-x-0 top-0 h-[200px] z-0 pointer-events-none">
           <MoodWave
-            colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+            colorStops={moodColors[currentMood] || moodColors["calm"]}
             blend={0.5}
-            amplitude={1.0}
+            amplitude={0.5}
             speed={0.5}
           />
         </div>
